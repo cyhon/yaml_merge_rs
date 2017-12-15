@@ -1,0 +1,7 @@
+.*
+!.gitignore
+!.drone.yml
+
+node_modules
+target
+build

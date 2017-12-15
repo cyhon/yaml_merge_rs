@@ -1,0 +1,9 @@
+[package]
+name = "yaml_merge"
+version = "0.1.0"
+authors = ["linhaitao <linhaitao@finogeeks.com>"]
+
+[dependencies]
+clap = "2.29.0"
+log = "0.3.8"
+env_logger = "0.4.3"
