@@ -5,5 +5,4 @@ authors = ["linhaitao <linhaitao@finogeeks.com>"]
 
 [dependencies]
 clap = "2.29.0"
-log = "0.3.8"
-env_logger = "0.4.3"
+yaml-rust = "0.4.0"
