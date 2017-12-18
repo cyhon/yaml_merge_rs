@@ -52,12 +52,9 @@ pub fn merge(from: &Yaml, to: &mut Yaml) {
                 Yaml::Hash(ref mut to_hash) => {
                     for (k, v) in from_hash {
                         {
-                            match to_hash.get_mut(k) {
-                                Some(to) => {
-                                    merge(v, to);
-                                    continue;
-                                }
-                                None => {}
+                            if let Some(tmp_to) = to_hash.get_mut(k) {
+                                merge(v, tmp_to);
+                                continue;
                             }
                         }
 

@@ -1,4 +1,5 @@
-use clap::{App, Arg};
+extern crate clap;
+use self::clap::{App, Arg};
 
 pub fn build_cli() -> App<'static, 'static> {
     App::new("yaml_merge")
