@@ -30,13 +30,49 @@ pub fn write_to_file(path: &str, data: &Yaml) {
 
 pub fn merge(from: &Yaml, to: &mut Yaml) {
     match *from {
-        Yaml::Array(ref arr) => {
-            for v in arr {
+        Yaml::Array(ref from_arr) => {
+            match *to {
+                Yaml::Array(ref mut to_arr) => {
+                    for v in from_arr {
+                        to_arr.push(v.clone());
+                    }
+                }
+
+                Yaml::Null => {
+                    *to = from.clone();
+                }
+
+                _ => {
+                    panic!("yaml文件格式不兼容，无法合并")
+                }
             }
         }
 
-        Yaml::Hash(ref hash) => {
-            for (k, v) in hash {
+        Yaml::Hash(ref from_hash) => {
+            match *to {
+                Yaml::Hash(ref mut to_hash) => {
+                    for (k, v) in from_hash {
+                        {
+                            match to_hash.get_mut(k) {
+                                Some(to) => {
+                                    merge(v, to);
+                                    continue;
+                                }
+                                None => {}
+                            }
+                        }
+
+                        to_hash.insert(k.clone(), v.clone());
+                    }
+                }
+
+                Yaml::Null => {
+                    *to = from.clone();
+                }
+
+                _ => {
+                    panic!("yaml文件格式不兼容，无法合并")
+                }
             }
         }
 

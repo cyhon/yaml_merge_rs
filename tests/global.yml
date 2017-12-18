@@ -1,0 +1,26 @@
+global:
+  scrape_interval:     30s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 30s # Evaluate rules every 15 seconds. The default is every 1 minute.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'codelab-monitor'
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+    - "/prometheus/rules/homeserver.rules.yml"
+    - "/prometheus/rules/nginx_gateway.rules.yml"
+    - "/prometheus/rules/docker_host.rules.yml"
+    - "/prometheus/rules/container.rules.yml"
+    - "/prometheus/rules/service_status.rules.yml"
+    - "/prometheus/rules/api_prober.rules.yml"
+    - "/prometheus/rules/nodejs_express.rules.yml"
+    - "/prometheus/rules/kotlin_vertx.rules.yml"
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+
