@@ -1,0 +1,20 @@
+cache:
+  mount:
+    - /drone/finochat/cargo
+
+build:
+  image: docker.finogeeks.club/base/rust:1.21.0
+  pull: true
+  commands:
+    - CARGO_HOME=/drone/finochat/cargo
+    - cargo build --release
+
+publish:
+  docker:
+    repo: tools/yaml-merge
+    file: Dockerfile
+    tag:
+      - latest
+    when:
+        branch: master
+        event: [push, pull_request]
