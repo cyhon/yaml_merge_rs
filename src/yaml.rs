@@ -3,7 +3,6 @@ extern crate yaml_rust;
 use std::fs::File;
 use std::io::prelude::*;
 use std::vec::Vec;
-use std::mem::transmute;
 use self::yaml_rust::{YamlLoader, YamlEmitter, Yaml};
 
 pub fn read_from_file(path: &str) -> Vec<Yaml> {
