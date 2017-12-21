@@ -15,16 +15,24 @@ pub fn read_from_file(path: &str) -> Vec<Yaml> {
     return YamlLoader::load_from_str(&contents).unwrap();
 }
 
-pub fn write_to_file(path: &str, data: &Yaml) {
+pub fn write_to_file(path: &str, data: Yaml) {
     let mut out_str = String::new();
 
     {
         let mut emitter = YamlEmitter::new(&mut out_str);
-        emitter.dump(data).unwrap();
+        emitter.dump(&data).unwrap();
     }
     File::create(path)
         .and_then(|mut file| file.write_all(out_str.as_bytes()))
         .unwrap();
+}
+
+pub fn merge_all(inputs: Vec<Yaml>) -> Yaml {
+    let mut data: Yaml = Yaml::Null;
+    for input in inputs {
+        merge(&input, &mut data)
+    }
+    return data
 }
 
 pub fn merge(from: &Yaml, to: &mut Yaml) {

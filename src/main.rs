@@ -7,18 +7,14 @@ use yaml_rust::Yaml;
 
 fn main() {
     let matches = cli::build_cli().get_matches();
-    let mut data = Yaml::Null;
 
-    if let Some(inputs) = matches.values_of("input") {
-        for input in inputs {
-            let docs = yaml::read_from_file(input);
-            for doc in &docs {
-                yaml::merge(doc, &mut data);
-            }
-        }
-    }
+    let inputs = matches.values_of_lossy("input").unwrap();
+    let output_path = matches.value_of("output").unwrap();
 
-    if let Some(output) = matches.value_of("output") {
-        yaml::write_to_file(output, &data);
-    }
+    let input_yaml_docs: Vec<Yaml> = inputs
+        .iter()
+        .flat_map(|path| yaml::read_from_file(path))
+        .collect();
+
+    yaml::write_to_file(output_path, yaml::merge_all(input_yaml_docs));
 }
